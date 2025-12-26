@@ -11,7 +11,7 @@ namespace Skills
         [SerializeField] private float _cooldownInSeconds;
         [SerializeField] private float _activeTimeInSeconds;
         [SerializeField] private Image _areaImage;
-        [SerializeField] private Collider2D _areaCollider;
+        [SerializeField] private CircleCollider2D _areaCollider;
 
         private bool _isOnCooldown;
         private bool _isActivated;
