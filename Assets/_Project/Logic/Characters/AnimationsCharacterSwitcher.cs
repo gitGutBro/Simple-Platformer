@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Characters
+namespace _Project.Logic.Characters
 {
     internal class AnimationsCharacterSwitcher
     {

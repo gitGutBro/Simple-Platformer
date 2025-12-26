@@ -1,13 +1,13 @@
+using _Project.Logic.Common;
+using _Project.Logic.Health;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
-using Common;
-using Health;
 
-namespace Characters
+namespace _Project.Logic.Characters
 {
     [RequireComponent(typeof(Rigidbody2D))]
     [RequireComponent(typeof(Animator))]
-    internal class Player : MonoBehaviour, IDamagable, IHealable
+    internal class Player : MonoBehaviour, IDamagable, IHealable, IHealthHaver
     {
         private const string Horizontal = nameof(Horizontal);
 

@@ -1,9 +1,9 @@
-﻿using Characters;
+﻿using _Project.Logic.Characters;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Skills
+namespace _Project.Logic.Skills
 {
     internal class VampireSkill : MonoBehaviour
     {

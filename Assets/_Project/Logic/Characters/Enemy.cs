@@ -1,11 +1,11 @@
 using System;
 using System.Threading;
+using _Project.Logic.Common;
+using _Project.Logic.Health;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
-using Common;
-using Health;
 
-namespace Characters
+namespace _Project.Logic.Characters
 {
     [RequireComponent(typeof(Animator))]
     [RequireComponent(typeof(Rigidbody2D))]

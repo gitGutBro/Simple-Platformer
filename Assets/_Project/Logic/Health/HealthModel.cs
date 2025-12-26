@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Health
+namespace _Project.Logic.Health
 {
     [Serializable]
     internal class HealthModel

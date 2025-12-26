@@ -2,7 +2,7 @@
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace Characters
+namespace _Project.Logic.Characters
 {
     internal class Attacker : MonoBehaviour
     {

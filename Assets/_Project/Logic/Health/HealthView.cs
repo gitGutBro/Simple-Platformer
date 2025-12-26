@@ -1,10 +1,9 @@
-﻿using System;
-using Characters;
+﻿using _Project.Logic.Characters;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Health
+namespace _Project.Logic.Health
 {
     [RequireComponent(typeof(Image))]
     internal class HealthView : MonoBehaviour

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Common
+namespace _Project.Logic.Common
 {
     public static class Extensions
     {
