@@ -802,11 +802,12 @@ MonoBehaviour:
   _transform: {fileID: 670591147}
   _groundChecker: {fileID: 1139575064}
   _rigidbody2D: {fileID: 670591145}
-  _animator: {fileID: 670591149}
   _groundLayer:
     serializedVersion: 2
     m_Bits: 256
   _attacker: {fileID: 611494194}
+  _animationsSwitcher:
+    _animator: {fileID: 670591149}
   <Health>k__BackingField:
     _current: 10
     <Max>k__BackingField: 10
@@ -989,9 +990,10 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   _transform: {fileID: 731614041}
-  _animator: {fileID: 731614038}
   _rigidbody2D: {fileID: 731614037}
   _attacker: {fileID: 1505134639}
+  _animationsSwitcher:
+    _animator: {fileID: 731614038}
   _wayPoints:
   - {fileID: 1946616947}
   - {fileID: 672636109}

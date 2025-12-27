@@ -18,9 +18,9 @@ namespace _Project.Logic.Characters
         [SerializeField] private Transform _transform;
         [SerializeField] private Transform _groundChecker;
         [SerializeField] private Rigidbody2D _rigidbody2D;
-        [SerializeField] private Animator _animator;
         [SerializeField] private LayerMask _groundLayer;
         [SerializeField] private Attacker _attacker;
+        [SerializeField] private AnimationsCharacterSwitcher _animationsSwitcher;
         
         [field:SerializeField] public HealthModel Health { get; private set; }
 
@@ -29,14 +29,12 @@ namespace _Project.Logic.Characters
         private bool _isJumpRequested;
         private bool _isJumpCutRequested;
         private float _horizontalInput;
-        private AnimationsCharacterSwitcher _animationsSwitcher;
 
         private bool CanAttack => Input.GetKeyDown(KeyCode.E) && _isAttacking is false &&
                                   _attacker.OnCooldown is false && _isGrounded;
 
         private void Awake()
         {
-            _animationsSwitcher = new AnimationsCharacterSwitcher(_animator);
             Health.Died += OnDie;
         }
 

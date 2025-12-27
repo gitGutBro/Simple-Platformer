@@ -19,23 +19,20 @@ namespace _Project.Logic.Characters
         [SerializeField] private byte _sightDistance;
         [SerializeField] private LayerMask _playerMask;
         [SerializeField] private Transform _transform;
-        [SerializeField] private Animator _animator;
         [SerializeField] private Rigidbody2D _rigidbody2D;
         [SerializeField] private Attacker _attacker;
+        [SerializeField] private AnimationsCharacterSwitcher _animationsSwitcher;
         [SerializeField] private Transform[] _wayPoints;
         
         [field: SerializeField] public HealthModel Health { get; private set; }
 
         private bool _isCleaned;
         private int _wayPointIndex = 0;
-        private AnimationsCharacterSwitcher _animationsSwitcher;
         
         private float NearDistanceSqr => _nearDistance * _nearDistance;
         
         private void Awake()
         {
-            _animationsSwitcher = new AnimationsCharacterSwitcher(_animator);
-
             Health.Died += OnDie;
         }
 
