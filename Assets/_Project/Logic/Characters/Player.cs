@@ -1,7 +1,8 @@
-using _Project.Logic.Common;
-using _Project.Logic.Health;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using _Project.Logic.Common;
+using _Project.Logic.Health;
+using _Project.Logic.Configs;
 
 namespace _Project.Logic.Characters
 {
@@ -11,21 +12,17 @@ namespace _Project.Logic.Characters
     {
         private const string Horizontal = nameof(Horizontal);
 
-        [SerializeField] private float _speed;
-        [SerializeField] private float _jumpForce;
-        [SerializeField] private float _jumpCutMultiplier;
-        [SerializeField] private float _groundCheckRadius;
+        [SerializeField] private PlayerData _data;
         [SerializeField] private Transform _transform;
         [SerializeField] private Transform _groundChecker;
         [SerializeField] private Rigidbody2D _rigidbody2D;
-        [SerializeField] private LayerMask _groundLayer;
         [SerializeField] private Attacker _attacker;
         [SerializeField] private AnimationsCharacterSwitcher _animationsSwitcher;
         
         [field:SerializeField] public HealthModel Health { get; private set; }
 
         private bool _isAttacking;
-        private bool _isGrounded;   
+        private bool _isGrounded;
         private bool _isJumpRequested;
         private bool _isJumpCutRequested;
         private float _horizontalInput;
@@ -66,19 +63,19 @@ namespace _Project.Logic.Characters
 
         private void FixedUpdate()
         {
-            _isGrounded = Physics2D.OverlapCircle(_groundChecker.position, _groundCheckRadius, _groundLayer);
-            _rigidbody2D.linearVelocityX = _horizontalInput * _speed;
+            _isGrounded = Physics2D.OverlapCircle(_groundChecker.position, _data.GroundCheckRadius, _data.GroundLayer);
+            _rigidbody2D.linearVelocityX = _horizontalInput * _data.Speed;
 
             if (_isJumpRequested)
             {
-                _rigidbody2D.linearVelocity = new Vector2(_rigidbody2D.linearVelocity.x, _jumpForce);
+                _rigidbody2D.linearVelocity = new Vector2(_rigidbody2D.linearVelocity.x, _data.JumpForce);
                 _isJumpRequested = false;
             }
 
             if (_isJumpCutRequested && _rigidbody2D.linearVelocityY > 0f)
             {
                 _rigidbody2D.linearVelocity = new Vector2
-                    (_rigidbody2D.linearVelocityX, _rigidbody2D.linearVelocityY * _jumpCutMultiplier);
+                    (_rigidbody2D.linearVelocityX, _rigidbody2D.linearVelocityY * _data.JumpCutMultiplier);
                 
                 _isJumpCutRequested = false;
             }

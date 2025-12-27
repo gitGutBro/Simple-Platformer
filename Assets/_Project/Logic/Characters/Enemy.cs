@@ -1,9 +1,10 @@
 using System;
 using System.Threading;
-using _Project.Logic.Common;
-using _Project.Logic.Health;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using _Project.Logic.Common;
+using _Project.Logic.Health;
+using _Project.Logic.Configs;
 
 namespace _Project.Logic.Characters
 {
@@ -14,10 +15,7 @@ namespace _Project.Logic.Characters
         private readonly CancellationTokenSource _cancellationTokenSource = new();
         private readonly RaycastHit2D[] _playerHit = new RaycastHit2D[1];
         
-        [SerializeField] private float _nearDistance;
-        [SerializeField] private float _speed;
-        [SerializeField] private byte _sightDistance;
-        [SerializeField] private LayerMask _playerMask;
+        [SerializeField] private EnemyData _data;
         [SerializeField] private Transform _transform;
         [SerializeField] private Rigidbody2D _rigidbody2D;
         [SerializeField] private Attacker _attacker;
@@ -28,8 +26,6 @@ namespace _Project.Logic.Characters
 
         private bool _isCleaned;
         private int _wayPointIndex = 0;
-        
-        private float NearDistanceSqr => _nearDistance * _nearDistance;
         
         private void Awake()
         {
@@ -142,10 +138,10 @@ namespace _Project.Logic.Characters
         {
             while (cancellationToken.IsCancellationRequested is false)
             {
-                int hits = Physics2D.RaycastNonAlloc(_transform.position, _transform.right, _playerHit, _sightDistance, _playerMask);
+                int hits = Physics2D.RaycastNonAlloc(_transform.position, _transform.right, _playerHit, _data.SightDistance, _data.PlayerMask);
 
 #if UNITY_EDITOR
-                Debug.DrawRay(_transform.position, _transform.right * _sightDistance, Color.red);
+                Debug.DrawRay(_transform.position, _transform.right * _data.SightDistance, Color.red);
 #endif
 
                 if (hits is 0)
@@ -171,10 +167,10 @@ namespace _Project.Logic.Characters
             {
                 Vector2 targetPosition = targetProvider();
 
-                if ((targetPosition - _rigidbody2D.position).sqrMagnitude <= NearDistanceSqr)
+                if ((targetPosition - _rigidbody2D.position).sqrMagnitude <= _data.NearDistanceSqr)
                     break;
 
-                _rigidbody2D.linearVelocityX = (targetPosition - _rigidbody2D.position).normalized.x * _speed;
+                _rigidbody2D.linearVelocityX = (targetPosition - _rigidbody2D.position).normalized.x * _data.Speed;
                 _rigidbody2D.transform.FlipX(_rigidbody2D.linearVelocity.x);
 
                 await UniTask.WaitForFixedUpdate();
@@ -193,7 +189,7 @@ namespace _Project.Logic.Characters
                 return false;
 
             float sqrDistance = (_playerHit[0].transform.position - _transform.position).sqrMagnitude;
-            return sqrDistance <= NearDistanceSqr;
+            return sqrDistance <= _data.NearDistanceSqr;
         }
 
         private void Clean()
