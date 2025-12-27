@@ -27,16 +27,17 @@ namespace _Project.Logic.Characters
         private bool _isCleaned;
         private int _wayPointIndex = 0;
         
-        private void Awake()
-        {
+        private void Awake() => 
             Health.Died += OnDie;
-        }
 
         private void Start() => 
             StartStatesBehaviour(_cancellationTokenSource.Token).Forget();
 
         private void OnValidate() => 
             Health.OnValidate();
+
+        private void FixedUpdate() => 
+            DetectingPlayer();
 
         private void OnDestroy()
         {
@@ -50,8 +51,6 @@ namespace _Project.Logic.Characters
         
         private async UniTaskVoid StartStatesBehaviour(CancellationToken globalToken)
         {
-            DetectingPlayer(globalToken).Forget();
-
             Func<bool> cachedPlayerHit = OnPlayerHit;
             Func<bool> cachedPlayerLost = OnPlayerLost;
             Func<bool> cachedPlayerNear = OnPlayerNear;
@@ -134,21 +133,17 @@ namespace _Project.Logic.Characters
             }
         }
 
-        private async UniTaskVoid DetectingPlayer(CancellationToken cancellationToken)
+        private void DetectingPlayer()
         {
-            while (cancellationToken.IsCancellationRequested is false)
-            {
-                int hits = Physics2D.RaycastNonAlloc(_transform.position, _transform.right, _playerHit, _data.SightDistance, _data.PlayerMask);
+            int hits = Physics2D.RaycastNonAlloc(_transform.position, _transform.right, _playerHit, _data.SightDistance,
+                _data.PlayerMask);
 
 #if UNITY_EDITOR
-                Debug.DrawRay(_transform.position, _transform.right * _data.SightDistance, Color.red);
+            Debug.DrawRay(_transform.position, _transform.right * _data.SightDistance, Color.red);
 #endif
 
-                if (hits is 0)
-                    _playerHit[0] = default;
-                
-                await UniTask.WaitForFixedUpdate();
-            }
+            if (hits is 0)
+                _playerHit[0] = default;
         }
 
         private UniTask MoveToPoint(Vector2 point, CancellationToken cancellationToken) => 
