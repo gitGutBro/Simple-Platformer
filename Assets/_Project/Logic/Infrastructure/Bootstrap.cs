@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
-using _Project.Logic.Skills;
 using _Project.Logic.Health;
+using _Project.Logic.Skills;
 using _Project.Logic.Characters;
 
-namespace _Project.Logic.Common
+namespace _Project.Logic.Infrastructure
 {
     internal class Bootstrap : MonoBehaviour
     {
