@@ -795,16 +795,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cc0bd7bb39a67a46bb4f2870d296b1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Characters.Player
-  _speed: 6
-  _jumpForce: 8
-  _jumpCutMultiplier: 0.6
-  _groundCheckRadius: 0.2
+  _data: {fileID: 11400000, guid: 006a32562167c09448b88ee3ca55e903, type: 2}
   _transform: {fileID: 670591147}
   _groundChecker: {fileID: 1139575064}
   _rigidbody2D: {fileID: 670591145}
-  _groundLayer:
-    serializedVersion: 2
-    m_Bits: 256
   _attacker: {fileID: 611494194}
   _animationsSwitcher:
     _animator: {fileID: 670591149}
@@ -983,12 +977,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6022eb0f556a3d43a0313f6e454ac0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
-  _nearDistance: 1
-  _speed: 5
-  _sightDistance: 5
-  _playerMask:
-    serializedVersion: 2
-    m_Bits: 64
+  _data: {fileID: 11400000, guid: 9c2da697b3a6ac14692ddb4375ba8e64, type: 2}
   _transform: {fileID: 731614041}
   _rigidbody2D: {fileID: 731614037}
   _attacker: {fileID: 1505134639}
