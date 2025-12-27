@@ -1,11 +1,11 @@
-﻿using _Project.Logic.Characters;
-using _Project.Logic.Health;
+﻿using UnityEngine;
 using _Project.Logic.Skills;
-using UnityEngine;
+using _Project.Logic.Health;
+using _Project.Logic.Characters;
 
-namespace _Project.Logic
+namespace _Project.Logic.Common
 {
-    public class Bootstrap : MonoBehaviour
+    internal class Bootstrap : MonoBehaviour
     {
         [SerializeField] private Player _player;
         [SerializeField] private HealthView _playerHealthView;
