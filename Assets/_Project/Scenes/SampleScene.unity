@@ -536,7 +536,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Characters.Attacker
   _damage: 5
-  _cooldownInMiliseconds: 1000
+  _cooldownInMilliseconds: 1000
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
@@ -800,6 +800,7 @@ MonoBehaviour:
   _groundChecker: {fileID: 1139575064}
   _rigidbody2D: {fileID: 670591145}
   _attacker: {fileID: 611494194}
+  _vampireSkill: {fileID: 1424718875}
   _animationsSwitcher:
     _animator: {fileID: 670591149}
   <Health>k__BackingField:
@@ -3277,11 +3278,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15ac7394a856423784171ee2cb0cec6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Skills.VampireSkill
-  _damageInHalfSecond: 1
-  _cooldownInSeconds: 4
-  _activeTimeInSeconds: 6
   _areaImage: {fileID: 1424718871}
   _areaCollider: {fileID: 1424718876}
+  _data: {fileID: 11400000, guid: 8fb2b8e77c61be048aff673b7926347a, type: 2}
 --- !u!58 &1424718876
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -3400,7 +3399,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Characters.Attacker
   _damage: 2
-  _cooldownInMiliseconds: 2000
+  _cooldownInMilliseconds: 0
 --- !u!1 &1562481063
 GameObject:
   m_ObjectHideFlags: 0
