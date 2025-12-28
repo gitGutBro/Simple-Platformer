@@ -7,7 +7,7 @@ namespace _Project.Logic.Characters
     internal class Attacker : MonoBehaviour
     {
         [SerializeField] private int  _damage;
-        [SerializeField] private float _cooldownInMiliseconds;
+        [SerializeField] private float _cooldownInMilliseconds;
         
         private IDamagable _currentDamagable;
 
@@ -16,7 +16,7 @@ namespace _Project.Logic.Characters
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (other.gameObject.TryGetComponent(out IDamagable damagable) == false) 
+            if (other.gameObject.TryGetComponent(out IDamagable damagable) is false) 
                 return;
             
             _currentDamagable = damagable;
@@ -27,13 +27,14 @@ namespace _Project.Logic.Characters
 
         public async UniTask TryAttack()
         {
-            if (HaveEnemy == false || OnCooldown)
+            if (OnCooldown)
                 return;
             
-            _currentDamagable.TakeDamage(_damage);
+            if (HaveEnemy)
+                _currentDamagable.TakeDamage(_damage);
 
             OnCooldown = true;
-            await UniTask.Delay(TimeSpan.FromMilliseconds(_cooldownInMiliseconds));
+            await UniTask.Delay(TimeSpan.FromMilliseconds(_cooldownInMilliseconds));
             OnCooldown = false;
         }
     }
