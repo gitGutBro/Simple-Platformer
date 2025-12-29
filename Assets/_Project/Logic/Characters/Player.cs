@@ -20,7 +20,9 @@ namespace _Project.Logic.Characters
         [SerializeField] private VampireSkill _vampireSkill;
         [SerializeField] private AnimationsCharacterSwitcher _animationsSwitcher;
         
-        [field:SerializeField] public HealthModel Health { get; private set; }
+        [field: SerializeField] public HealthModel Health { get; private set; }
+        
+        public Wallet Wallet { get; private set; }
 
         private bool _isAttacking;
         private bool _isGrounded;
@@ -28,7 +30,6 @@ namespace _Project.Logic.Characters
         private bool _isJumpCutRequested;
         
         private float _horizontalInput;
-        private uint _countCoins;
         
         private IGameplayInputSystem _input;
         
@@ -39,6 +40,7 @@ namespace _Project.Logic.Characters
             _input = new GameplayNewInputSystem();
             _vampireSkill.Init(this);
             
+            Wallet = new Wallet();
             Health.Died += OnDie;
 
             _input.MoveChanged += OnMoveChanged;
@@ -89,15 +91,6 @@ namespace _Project.Logic.Characters
             
             _input?.Dispose();
             _input = null;
-        }
-
-        public void AddCoin()
-        {
-            _countCoins++;
-
-#if UNITY_EDITOR
-            Debug.Log($"Add coin. Count coins: {_countCoins}");
-#endif
         }
 
         public void TakeDamage(int amount) => 

@@ -7,7 +7,7 @@ namespace _Project.Logic.Items
     {
         public void Consume(IItemConsumer consumer)
         {
-            consumer.AddCoin();
+            consumer.Wallet.AddCoin();
             Destroy(gameObject);
         }
     }

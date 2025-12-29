@@ -2,6 +2,6 @@
 {
     internal interface IItemConsumer : IHealthHaver
     {
-        void AddCoin();
+        Wallet Wallet { get; }
     }
 }
