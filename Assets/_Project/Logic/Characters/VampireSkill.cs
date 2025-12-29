@@ -90,13 +90,7 @@ namespace _Project.Logic.Characters
             
             _isStealing = true;
 
-            if (cancellationToken.IsCancellationRequested)
-            {
-                _isStealing = false;
-                return;
-            }
-            
-            CurrentDamagable.TakeDamage(_data.DamageInHalfSecond);
+            TakeDamageToTarget(_data.DamageInHalfSecond);
             _healable.Heal(_data.DamageInHalfSecond);
 
             await UniTask.WaitForSeconds(HalfSecond, cancellationToken: cancellationToken);

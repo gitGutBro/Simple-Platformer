@@ -4,20 +4,23 @@ namespace _Project.Logic.Characters
 {
     internal abstract class DamageArea : MonoBehaviour
     {
-        protected IDamagable CurrentDamagable;
+        private IDamagable _currentDamagable;
         
-        protected bool HaveTarget => CurrentDamagable is not null;
+        protected bool HaveTarget => _currentDamagable is not null;
         
         private void OnTriggerEnter2D(Collider2D other)
         {
             if (other.TryGetComponent(out IDamagable damagable))
-                CurrentDamagable = damagable;
+                _currentDamagable = damagable;
         }
 
         private void OnTriggerExit2D(Collider2D other)
         {
             if  (other.TryGetComponent(out IDamagable _))
-                CurrentDamagable = null;
+                _currentDamagable = null;
         }
+        
+        protected void TakeDamageToTarget(int damage) =>
+            _currentDamagable.TakeDamage(damage);
     }
 }

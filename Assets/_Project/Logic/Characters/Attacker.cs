@@ -17,7 +17,7 @@ namespace _Project.Logic.Characters
                 return;
             
             if (HaveTarget)
-                CurrentDamagable.TakeDamage(_damage);
+                TakeDamageToTarget(_damage);
 
             OnCooldown = true;
             await UniTask.Delay(TimeSpan.FromMilliseconds(_cooldownInMilliseconds));
