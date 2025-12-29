@@ -3540,7 +3540,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Characters.Attacker
   _damage: 2
-  _cooldownInMilliseconds: 0
+  _cooldownInMilliseconds: 2500
 --- !u!1 &1554173482
 GameObject:
   m_ObjectHideFlags: 0
