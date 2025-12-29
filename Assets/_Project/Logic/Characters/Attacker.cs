@@ -4,34 +4,20 @@ using UnityEngine;
 
 namespace _Project.Logic.Characters
 {
-    internal class Attacker : MonoBehaviour
+    internal class Attacker : DamageArea
     {
-        [SerializeField] private int  _damage;
+        [SerializeField] private int _damage;
         [SerializeField] private float _cooldownInMilliseconds;
         
-        private IDamagable _currentDamagable;
-
         public bool OnCooldown { get; private set; }
-        private bool HaveEnemy => _currentDamagable != null;
-
-        private void OnTriggerEnter2D(Collider2D other)
-        {
-            if (other.gameObject.TryGetComponent(out IDamagable damagable) is false) 
-                return;
-            
-            _currentDamagable = damagable;
-        }
-
-        private void OnTriggerExit2D(Collider2D other) => 
-            _currentDamagable = null;
-
+        
         public async UniTask TryAttack()
         {
             if (OnCooldown)
                 return;
             
-            if (HaveEnemy)
-                _currentDamagable.TakeDamage(_damage);
+            if (HaveTarget)
+                CurrentDamagable.TakeDamage(_damage);
 
             OnCooldown = true;
             await UniTask.Delay(TimeSpan.FromMilliseconds(_cooldownInMilliseconds));

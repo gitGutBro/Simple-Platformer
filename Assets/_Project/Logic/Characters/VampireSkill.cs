@@ -1,12 +1,15 @@
-﻿using _Project.Logic.Characters;
+﻿using System;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace _Project.Logic.Skills
+namespace _Project.Logic.Characters
 {
-    internal class VampireSkill : MonoBehaviour
+    internal class VampireSkill : DamageArea
     {
+        private readonly CancellationTokenSource _globalTokenSource = new();
+        
         [SerializeField] private Image _areaImage;
         [SerializeField] private CircleCollider2D _areaCollider;
         [SerializeField] private VampireSkillData _data;
@@ -15,7 +18,6 @@ namespace _Project.Logic.Skills
         private bool _isActivated;
         private bool _isStealing;
         
-        private IDamagable _damagable;
         private IHealable _healable;
 
         private bool CanActivate => _isOnCooldown is false && _isActivated is false;
@@ -24,28 +26,31 @@ namespace _Project.Logic.Skills
         {
             _areaImage.enabled = false;
             _areaCollider.enabled = false;
+            
+            WaitStealing(_globalTokenSource.Token).Forget();
         }
 
-        private void OnTriggerEnter2D(Collider2D other)
+        private void OnDestroy()
         {
-            if (other.TryGetComponent(out IDamagable damagable))
-                _damagable = damagable;
+            _globalTokenSource?.Cancel();
+            _globalTokenSource?.Dispose();
         }
 
-        private void OnTriggerStay2D(Collider2D other)
+        private async UniTaskVoid WaitStealing(CancellationToken globalToken)
         {
-            if (_isActivated is false)
-                return;
+            Func<bool> cachedCanSteal = () => _isActivated && HaveTarget && _healable is not null;
+            
+            while (globalToken.IsCancellationRequested is false)
+            {
+                await UniTask.WaitUntil(cachedCanSteal, cancellationToken: globalToken);
                 
-            StealHealth(_damagable, _healable).Forget();
+                using CancellationTokenSource stealTokenSource =
+                    CancellationTokenSource.CreateLinkedTokenSource(globalToken);
+                
+                await StealHealth(stealTokenSource.Token);
+            }
         }
-
-        private void OnTriggerExit2D(Collider2D other)
-        {
-            if  (other.TryGetComponent(out IDamagable _))
-                _damagable = null;
-        }
-
+        
         public void Init(IHealable healable) =>
             _healable = healable;
 
@@ -73,22 +78,28 @@ namespace _Project.Logic.Skills
             _isOnCooldown = false;
         }
 
-        private async UniTaskVoid StealHealth(IDamagable damagable, IHealable healable)
+        private async UniTask StealHealth(CancellationToken cancellationToken)
         {
             const float HalfSecond = 0.5f;
             
-            if (damagable is null || healable is null)
+            if (HaveTarget || _healable is null)
                 return;
             
             if (_isStealing)
                 return;
             
             _isStealing = true;
-            
-            damagable.TakeDamage(_data.DamageInHalfSecond);
-            healable.Heal(_data.DamageInHalfSecond);
 
-            await UniTask.WaitForSeconds(HalfSecond);
+            if (cancellationToken.IsCancellationRequested)
+            {
+                _isStealing = false;
+                return;
+            }
+            
+            CurrentDamagable.TakeDamage(_data.DamageInHalfSecond);
+            _healable.Heal(_data.DamageInHalfSecond);
+
+            await UniTask.WaitForSeconds(HalfSecond, cancellationToken: cancellationToken);
             
             _isStealing = false;
         }
