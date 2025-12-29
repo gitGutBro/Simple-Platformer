@@ -20,7 +20,7 @@ namespace _Project.Logic.Characters
                 _currentDamagable = null;
         }
         
-        protected void TakeDamageToTarget(int damage) =>
+        protected void TakeDamageToTarget(int damage) => 
             _currentDamagable.TakeDamage(damage);
     }
 }

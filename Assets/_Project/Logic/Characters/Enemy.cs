@@ -200,9 +200,9 @@ namespace _Project.Logic.Characters
         
         private void OnDie()
         {
-            gameObject.SetActive(false);
-            
             Clean();
+            
+            gameObject.SetActive(false);
         }
     }
 }
