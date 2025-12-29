@@ -10,7 +10,7 @@ namespace _Project.Logic.Characters
 {
     [RequireComponent(typeof(Rigidbody2D))]
     [RequireComponent(typeof(Animator))]
-    internal class Player : MonoBehaviour, IDamagable, IHealable, IHealthHaver
+    internal class Player : MonoBehaviour, IDamagable, IHealable, IItemConsumer
     {
         [SerializeField] private PlayerData _data;
         [SerializeField] private Transform _transform;
@@ -22,13 +22,15 @@ namespace _Project.Logic.Characters
         
         [field:SerializeField] public HealthModel Health { get; private set; }
 
-        private IGameplayInputSystem _input;
-            
         private bool _isAttacking;
         private bool _isGrounded;
         private bool _isJumpRequested;
         private bool _isJumpCutRequested;
+        
         private float _horizontalInput;
+        private uint _countCoins;
+        
+        private IGameplayInputSystem _input;
         
         private bool CanAttack => _isAttacking is false && _attacker.OnCooldown is false && _isGrounded;
 
@@ -87,6 +89,15 @@ namespace _Project.Logic.Characters
             
             _input?.Dispose();
             _input = null;
+        }
+
+        public void AddCoin()
+        {
+            _countCoins++;
+
+#if UNITY_EDITOR
+            Debug.Log($"Add coin. Count coins: {_countCoins}");
+#endif
         }
 
         public void TakeDamage(int amount) => 

@@ -11,11 +11,15 @@ namespace _Project.Logic.Infrastructure
         [Space]
         [SerializeField] private Enemy _enemy;
         [SerializeField] private HealthView _enemyHealthView;
-
+        [Space]
+        [SerializeField] private ItemsCollector _itemsCollector;
+        
         private void Awake()
         {
             _playerHealthView.Init(_player);
             _enemyHealthView.Init(_enemy);
+            
+            _itemsCollector.Init(_player);
         }
     }
 }
