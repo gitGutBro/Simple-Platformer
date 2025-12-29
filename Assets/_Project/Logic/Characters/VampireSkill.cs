@@ -82,14 +82,14 @@ namespace _Project.Logic.Characters
         {
             const float HalfSecond = 0.5f;
             
-            if (HaveTarget || _healable is null)
+            if (HaveTarget is false || _healable is null)
                 return;
             
             if (_isStealing)
                 return;
             
             _isStealing = true;
-
+            
             TakeDamageToTarget(_data.DamageInHalfSecond);
             _healable.Heal(_data.DamageInHalfSecond);
 
