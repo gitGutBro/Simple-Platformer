@@ -4,7 +4,7 @@ using UnityEngine;
 namespace _Project.Logic.Characters
 {
     [Serializable]
-    internal class AnimationsCharacterSwitcher
+    internal class AnimationsCharacterSwitcher : IAttackAnimator
     {
         private static readonly int IsGrounded = Animator.StringToHash(nameof(IsGrounded));
         private static readonly int Speed = Animator.StringToHash(nameof(Speed));

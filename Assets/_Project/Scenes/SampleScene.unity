@@ -937,11 +937,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Characters.Player
   _data: {fileID: 11400000, guid: 006a32562167c09448b88ee3ca55e903, type: 2}
-  _transform: {fileID: 670591147}
-  _groundChecker: {fileID: 1139575064}
-  _rigidbody2D: {fileID: 670591145}
   _attacker: {fileID: 611494194}
   _vampireSkill: {fileID: 1424718875}
+  _jumper:
+    _groundChecker: {fileID: 1139575064}
+    _rigidbody2D: {fileID: 670591145}
+  _moverX:
+    _rigidbody2D: {fileID: 670591145}
+    _characterTransform: {fileID: 670591147}
   _animationsSwitcher:
     _animator: {fileID: 670591149}
   <Health>k__BackingField:

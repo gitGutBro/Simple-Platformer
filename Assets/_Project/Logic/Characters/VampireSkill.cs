@@ -54,7 +54,7 @@ namespace _Project.Logic.Characters
         public void Init(IHealable healable) =>
             _healable = healable;
 
-        public void TryActivate()
+        public void OnVampirePressed()
         {
             if (CanActivate is false)
                 return;
