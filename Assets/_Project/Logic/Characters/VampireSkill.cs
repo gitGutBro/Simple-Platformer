@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace _Project.Logic.Characters
 {
-    internal class VampireSkill : DamageArea
+    internal sealed class VampireSkill : DamageArea
     {
         private readonly CancellationTokenSource _globalTokenSource = new();
         

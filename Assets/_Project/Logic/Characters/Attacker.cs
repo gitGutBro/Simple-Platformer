@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace _Project.Logic.Characters
 {
-    internal class Attacker : DamageArea
+    internal sealed class Attacker : DamageArea, IPlayerAttacker, IEnemyAttacker
     {
         [SerializeField] private int _damage;
         [SerializeField] private float _cooldownInMilliseconds;
@@ -26,7 +26,6 @@ namespace _Project.Logic.Characters
                 return;
 
             _isAttacking = true;
-            _animator.SetAttacking();
             HandleAttack().Forget();
         }
 
@@ -37,6 +36,8 @@ namespace _Project.Logic.Characters
             
             if (HaveTarget)
                 TakeDamageToTarget(_damage);
+
+            _animator.SetAttacking();
 
             OnCooldown = true;
             await UniTask.Delay(TimeSpan.FromMilliseconds(_cooldownInMilliseconds));

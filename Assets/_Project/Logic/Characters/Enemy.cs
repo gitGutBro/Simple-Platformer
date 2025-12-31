@@ -26,9 +26,13 @@ namespace _Project.Logic.Characters
 
         private bool _isCleaned;
         private int _wayPointIndex = 0;
-        
-        private void Awake() => 
+
+        private void Awake()
+        {
             Health.Died += OnDie;
+
+            _attacker.Init(_animationsSwitcher);
+        }
 
         private void Start() => 
             StartStatesBehaviour(_cancellationTokenSource.Token).Forget();
@@ -77,7 +81,6 @@ namespace _Project.Logic.Characters
                         {
                             _rigidbody2D.linearVelocityX = 0;
                             _animationsSwitcher.SetSpeed(0);
-                            _animationsSwitcher.SetAttacking();
 
                             await _attacker.TryAttack();
                         }
@@ -150,7 +153,7 @@ namespace _Project.Logic.Characters
             Move(() => point, cancellationToken);
 
         private UniTask MoveToTarget(Transform target, CancellationToken cancellationToken) => 
-            target is null ? UniTask.CompletedTask : Move(() => target.position, cancellationToken);
+            target == null ? UniTask.CompletedTask : Move(() => target.position, cancellationToken);
 
         private async UniTask Move(Func<Vector2> targetProvider, CancellationToken cancellationToken)
         {
@@ -173,7 +176,7 @@ namespace _Project.Logic.Characters
         }
         
         private bool OnPlayerHit() => 
-            _playerHit[0].collider is not null;
+            _playerHit[0].collider != null;
         
         private bool OnPlayerLost() => 
             OnPlayerHit() is false;

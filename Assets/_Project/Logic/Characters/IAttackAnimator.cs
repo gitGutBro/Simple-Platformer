@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-namespace _Project.Logic.Characters
+﻿namespace _Project.Logic.Characters
 {
     internal interface IAttackAnimator
     {
