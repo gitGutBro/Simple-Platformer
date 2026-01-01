@@ -6,7 +6,7 @@ using _Project.Logic.Configs;
 namespace _Project.Logic.Characters
 {
     [Serializable]
-    internal class CharacterMoverX
+    internal class PlayerMoverX
     {
         [SerializeField] private Transform _characterTransform;
         [SerializeField] private Rigidbody2D _rigidbody2D;

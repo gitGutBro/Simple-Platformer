@@ -13,7 +13,7 @@ namespace _Project.Logic.Characters
         [SerializeField] private Attacker _attacker;
         [SerializeField] private VampireSkill _vampireSkill;
         [SerializeField] private CharacterJumper _jumper;
-        [SerializeField] private CharacterMoverX _moverX;
+        [SerializeField] private PlayerMoverX _moverX;
         [SerializeField] private AnimationsCharacterSwitcher _animationsSwitcher;
 
         [field: SerializeField] public HealthModel Health { get; private set; }
