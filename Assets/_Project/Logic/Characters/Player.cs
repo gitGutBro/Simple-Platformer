@@ -21,7 +21,6 @@ namespace _Project.Logic.Characters
         private IGameplayInputSystem _input;
  
         public Wallet Wallet { get; private set; }
-
         
         private void Awake()
         {

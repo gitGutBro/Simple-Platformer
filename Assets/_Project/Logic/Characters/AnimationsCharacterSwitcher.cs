@@ -12,6 +12,8 @@ namespace _Project.Logic.Characters
         
         [SerializeField] private Animator _animator;
 
+        [field: SerializeField] public float AttackAnimationTimeInMilliseconds { get; private set; }
+
         public void SetSpeed(float speed) =>
             _animator.SetFloat(Speed, Mathf.Abs(speed));
 

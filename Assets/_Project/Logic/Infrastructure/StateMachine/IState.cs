@@ -1,8 +1,11 @@
-﻿namespace _Project.Logic.Infrastructure.StateMachine
+﻿using Cysharp.Threading.Tasks;
+
+namespace _Project.Logic.Infrastructure.StateMachine
 {
     internal interface IState
     {
-        void Enter();
-        void Exit();
+        UniTask Enter();
+        UniTask Exit();
+        void SetStateMachine(StateMachine stateMachine);
     }
 }

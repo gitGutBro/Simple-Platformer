@@ -1,11 +1,14 @@
-﻿using Cysharp.Threading.Tasks;
-using System;
+﻿using System;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace _Project.Logic.Characters
 {
     internal sealed class Attacker : DamageArea, IPlayerAttacker, IEnemyAttacker
     {
+        private const float DelayAfterAnimationInSeconds = 0.5f;
+
         [SerializeField] private int _damage;
         [SerializeField] private float _cooldownInMilliseconds;
 
@@ -29,19 +32,37 @@ namespace _Project.Logic.Characters
             HandleAttack().Forget();
         }
 
-        public async UniTask TryAttack()
+        public async UniTask TryAttack(CancellationToken cancellationToken = default)
         {
             if (OnCooldown)
                 return;
-            
-            if (HaveTarget)
-                TakeDamageToTarget(_damage);
+
+            OnCooldown = true;
+            RunCooldownUncancellable().Forget();
 
             _animator.SetAttacking();
 
-            OnCooldown = true;
-            await UniTask.Delay(TimeSpan.FromMilliseconds(_cooldownInMilliseconds));
-            OnCooldown = false;
+            await UniTask.Delay(TimeSpan.FromMilliseconds(_animator.AttackAnimationTimeInMilliseconds));
+            await UniTask.WaitForSeconds(DelayAfterAnimationInSeconds);
+
+            if (HaveTarget)
+                TakeDamageToTarget(_damage);
+        }
+
+        private async UniTaskVoid RunCooldownUncancellable()
+        {
+            try
+            {
+                await UniTask.Delay(TimeSpan.FromMilliseconds(_cooldownInMilliseconds));
+            }
+            catch (Exception ex)
+            {
+                Debug.LogException(ex);
+            }
+            finally
+            {
+                OnCooldown = false;
+            }
         }
 
         private async UniTaskVoid HandleAttack()

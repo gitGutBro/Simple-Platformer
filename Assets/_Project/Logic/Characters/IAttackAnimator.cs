@@ -2,6 +2,7 @@
 {
     internal interface IAttackAnimator
     {
+        float AttackAnimationTimeInMilliseconds { get; }
         public void SetAttacking();
     }
 }

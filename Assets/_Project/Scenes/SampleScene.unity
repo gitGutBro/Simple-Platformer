@@ -943,10 +943,11 @@ MonoBehaviour:
     _groundChecker: {fileID: 1139575064}
     _rigidbody2D: {fileID: 670591145}
   _moverX:
-    _rigidbody2D: {fileID: 670591145}
     _characterTransform: {fileID: 670591147}
+    _rigidbody2D: {fileID: 670591145}
   _animationsSwitcher:
     _animator: {fileID: 670591149}
+    <AttackAnimationTimeInMilliseconds>k__BackingField: 0
   <Health>k__BackingField:
     _current: 10
     <Max>k__BackingField: 10
@@ -1122,18 +1123,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6022eb0f556a3d43a0313f6e454ac0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
-  _data: {fileID: 11400000, guid: 9c2da697b3a6ac14692ddb4375ba8e64, type: 2}
-  _transform: {fileID: 731614041}
-  _rigidbody2D: {fileID: 731614037}
   _attacker: {fileID: 1505134639}
+  _data: {fileID: 11400000, guid: 9c2da697b3a6ac14692ddb4375ba8e64, type: 2}
   _animationsSwitcher:
     _animator: {fileID: 731614038}
-  _wayPoints:
-  - {fileID: 1946616947}
-  - {fileID: 672636109}
+    <AttackAnimationTimeInMilliseconds>k__BackingField: 0.583
   <Health>k__BackingField:
     _current: 10
     <Max>k__BackingField: 10
+  <MoverX>k__BackingField:
+    _rigidbody2D: {fileID: 731614037}
+    _wayPoints:
+    - {fileID: 1946616947}
+    - {fileID: 672636109}
 --- !u!212 &731614040
 SpriteRenderer:
   m_ObjectHideFlags: 0

@@ -1,10 +1,11 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using System.Threading;
+using Cysharp.Threading.Tasks;
 
 namespace _Project.Logic.Characters
 {
     internal interface IEnemyAttacker
     {
         void Init(IAttackAnimator animator);
-        UniTask TryAttack();
+        UniTask TryAttack(CancellationToken cancellationToken = default);
     }
 }

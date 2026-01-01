@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 
 namespace _Project.Logic.Infrastructure.StateMachine
 {
@@ -12,12 +13,20 @@ namespace _Project.Logic.Infrastructure.StateMachine
         public StateMachine(Dictionary<Type, IState> states) => 
             _states = states;
 
-        public void Enter<TState>() where TState : IState
+        public async UniTask Enter<TState>() where TState : IState
         {
-            _activeState?.Exit();
+            await Exit();
+
             IState state = _states[typeof(TState)];
             _activeState = state;
-            state.Enter();
+
+            await state.Enter();
+        }
+
+        public async UniTask Exit()
+        {
+            if (_activeState is not null)
+                await _activeState.Exit();
         }
     }
 }

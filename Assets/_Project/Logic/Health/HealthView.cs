@@ -1,7 +1,7 @@
-﻿using _Project.Logic.Characters;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using _Project.Logic.Characters;
 
 namespace _Project.Logic.Health
 {
