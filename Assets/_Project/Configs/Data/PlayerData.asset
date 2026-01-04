@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 447ecaf349220b54b80f9da036a22be6, type: 3}
   m_Name: PlayerData
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Logic.Configs.PlayerData
+  _attackClip: {fileID: 7400000, guid: 8458deb8c43bc7748ab11e9eb93a3351, type: 2}
   <Speed>k__BackingField: 6
   <JumpForce>k__BackingField: 8
   <JumpCutMultiplier>k__BackingField: 0.6

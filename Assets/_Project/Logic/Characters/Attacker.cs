@@ -42,7 +42,7 @@ namespace _Project.Logic.Characters
 
             _animator.SetAttacking();
 
-            await UniTask.Delay(TimeSpan.FromMilliseconds(_animator.AttackAnimationTimeInMilliseconds));
+            await UniTask.Delay(TimeSpan.FromMilliseconds(_animator.AttackAnimationTimeInSeconds));
             await UniTask.WaitForSeconds(DelayAfterAnimationInSeconds);
 
             if (HaveTarget)

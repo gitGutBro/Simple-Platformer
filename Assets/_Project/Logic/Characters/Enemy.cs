@@ -25,8 +25,9 @@ namespace _Project.Logic.Characters
 
         private void Awake()
         {
-            TargetDetector = new TargetDetector(_data.NearDistance, _data.SightDistance, _data.PlayerMask, transform);
+            TargetDetector = new TargetDetector(transform, _data);
 
+            _animationsSwitcher.Init(_data);
             _attacker.Init(_animationsSwitcher);
             MoverX.Init(_data);
 

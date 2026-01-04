@@ -1,4 +1,5 @@
 using UnityEngine;
+using Zenject;
 using _Project.Logic.Health;
 using _Project.Logic.InputSystem;
 using _Project.Logic.Configs.Data;
@@ -16,16 +17,22 @@ namespace _Project.Logic.Characters
         [SerializeField] private PlayerMoverX _moverX;
         [SerializeField] private AnimationsCharacterSwitcher _animationsSwitcher;
 
+        [Inject]
+        public void Construct(IGameplayInputSystem inputSystem, Wallet wallet)
+        {
+            _inputSystem = inputSystem;
+            Wallet = wallet;
+        }
+
         [field: SerializeField] public HealthModel Health { get; private set; }
 
-        private IGameplayInputSystem _input;
- 
+        private IGameplayInputSystem _inputSystem;
+
         public Wallet Wallet { get; private set; }
         
-        private void Awake()
+        private void Start()
         {
-            _input = new GameplayNewInputSystem();
-
+            _animationsSwitcher.Init(_data);
             _attacker.Init(_animationsSwitcher);
             _attacker.Grounded += _jumper.OnIsGrounded;
 
@@ -33,14 +40,13 @@ namespace _Project.Logic.Characters
             _jumper.Init(_data);
             _moverX.Init(_data);
 
-            Wallet = new Wallet();
             Health.Died += OnDie;
 
-            _input.MoveChanged += _moverX.OnMoveChanged;
-            _input.JumpPressed += _jumper.OnJumpPressed;
-            _input.JumpReleased += _jumper.OnJumpReleased;
-            _input.AttackPressed += _attacker.OnAttackPressed;
-            _input.VampirePressed += _vampireSkill.OnVampirePressed;
+            _inputSystem.MoveChanged += _moverX.OnMoveChanged;
+            _inputSystem.JumpPressed += _jumper.OnJumpPressed;
+            _inputSystem.JumpReleased += _jumper.OnJumpReleased;
+            _inputSystem.AttackPressed += _attacker.OnAttackPressed;
+            _inputSystem.VampirePressed += _vampireSkill.OnVampirePressed;
         }
 
         private void OnValidate() => 
@@ -63,17 +69,18 @@ namespace _Project.Logic.Characters
         private void OnDestroy()
         {
             _attacker.Grounded -= _jumper.OnIsGrounded;
-
             Health.Died -= OnDie;
-            
-            _input.MoveChanged -= _moverX.OnMoveChanged;
-            _input.JumpPressed -= _jumper.OnJumpPressed;
-            _input.JumpReleased -= _jumper.OnJumpReleased;
-            _input.AttackPressed -= _attacker.OnAttackPressed;
-            _input.VampirePressed -= _vampireSkill.OnVampirePressed;
-            
-            _input?.Dispose();
-            _input = null;
+
+            if (_inputSystem is not null)
+            {
+                _inputSystem.MoveChanged -= _moverX.OnMoveChanged;
+                _inputSystem.JumpPressed -= _jumper.OnJumpPressed;
+                _inputSystem.JumpReleased -= _jumper.OnJumpReleased;
+                _inputSystem.AttackPressed -= _attacker.OnAttackPressed;
+                _inputSystem.VampirePressed -= _vampireSkill.OnVampirePressed;
+            }
+
+            _inputSystem = null;
         }
 
         public void TakeDamage(int amount) => 

@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b6584864c8a67e42b944afa65ca1330, type: 3}
   m_Name: EnemyData
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Logic.Configs.EnemyData
+  _attackAnimation: {fileID: 7400000, guid: 315fb1f74c892a1458af6e9469b30524, type: 2}
   <NearDistance>k__BackingField: 1
-  <SightDistance>k__BackingField: 5
+  <DetectionRadius>k__BackingField: 5
   <Speed>k__BackingField: 5
-  <PlayerMask>k__BackingField:
+  <TargetLayer>k__BackingField:
     serializedVersion: 2
     m_Bits: 64
