@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using _Project.Logic.Health;
@@ -13,8 +12,6 @@ namespace _Project.Logic.Characters
     [RequireComponent(typeof(Rigidbody2D))]
     internal class Enemy : MonoBehaviour, IDamagable, IChaseContext
     {
-        private readonly CancellationTokenSource _cancellationTokenSource = new();
-
         [SerializeField] private Attacker _attacker;
         [SerializeField] private EnemyData _data;
         [SerializeField] private AnimationsCharacterSwitcher _animationsSwitcher;
@@ -23,7 +20,6 @@ namespace _Project.Logic.Characters
         [field: SerializeField] public EnemyMoverX MoverX { get; private set; }
         [field: SerializeField] public TargetDetector TargetDetector { get; private set; }
 
-        private bool _isCleaned;
         private StateMachine _stateMachine;
         private Dictionary<Type, IState> _states;
 
@@ -66,28 +62,14 @@ namespace _Project.Logic.Characters
             MoverX.Moved -= OnMoved;
             MoverX.Stoped -= OnStoped;
 
-            Clean();
             _stateMachine.Exit().Forget();
         }
         
         public void TakeDamage(int amount) => 
             Health.Decrease(amount);
 
-        private void Clean()
-        {
-            if (_isCleaned)
-                return;
-            
-            _cancellationTokenSource?.Cancel();
-            _cancellationTokenSource?.Dispose();
-            
-            _isCleaned = true;
-        }
-        
         private void OnDie()
         {
-            Clean();
-            
             gameObject.SetActive(false);
             _stateMachine.Exit().Forget();
         }

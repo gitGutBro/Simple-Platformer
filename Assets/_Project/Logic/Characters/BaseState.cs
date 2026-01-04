@@ -14,7 +14,12 @@ namespace _Project.Logic.Characters
             StateMachine = stateMachine;
 
         public abstract UniTask Enter();
-        public abstract UniTask Exit();
+
+        public async UniTask Exit()
+        {
+            DisposeToken();
+            await UniTask.CompletedTask;
+        }
 
         protected void DisposeToken()
         {

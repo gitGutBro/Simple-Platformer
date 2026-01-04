@@ -5,8 +5,8 @@ using _Project.Logic.InputSystem;
 
 namespace _Project.Logic.Characters
 {
-    [RequireComponent(typeof(Rigidbody2D))]
     [RequireComponent(typeof(Animator))]
+    [RequireComponent(typeof(Rigidbody2D))]
     internal class Player : MonoBehaviour, IDamagable, IHealable, IItemConsumer
     {
         [SerializeField] private PlayerData _data;

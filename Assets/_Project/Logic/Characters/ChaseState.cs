@@ -40,10 +40,4 @@ internal sealed class ChaseState : BaseState
             await StateMachine.Enter<AttackState>();
         }
     }
-
-    public async override UniTask Exit()
-    {
-        DisposeToken();
-        await UniTask.CompletedTask;
-    }
 }

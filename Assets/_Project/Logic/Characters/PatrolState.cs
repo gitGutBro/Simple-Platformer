@@ -24,10 +24,4 @@ internal sealed class PatrolState : BaseState
 
         await StateMachine.Enter<ChaseState>();
     }
-
-    public override UniTask Exit()
-    {
-        DisposeToken();
-        return UniTask.CompletedTask;
-    }
 }

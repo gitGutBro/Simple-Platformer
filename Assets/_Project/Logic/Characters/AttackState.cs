@@ -26,7 +26,7 @@ internal sealed class AttackState : BaseState
             while (_targetDetector.IsTargetNear() && CancellationTokenSource.IsCancellationRequested is false)
             {
                 if (_onCooldown.Invoke() is false)
-                    await _attack(CancellationTokenSource.Token);
+                    await _attack(CancellationTokenSource.Token).SuppressCancellationThrow();
                 else
                     await UniTask.Yield(PlayerLoopTiming.Update, CancellationTokenSource.Token);
 
@@ -41,10 +41,7 @@ internal sealed class AttackState : BaseState
                 }
             }
         }
-        catch (OperationCanceledException)
-        {
-            // Ignore cancellation
-        }
+        catch (OperationCanceledException) { }
         catch (Exception ex)
         {
             Debug.LogException(ex);
@@ -54,11 +51,5 @@ internal sealed class AttackState : BaseState
             await StateMachine.Enter<PatrolState>();
         else if (_targetDetector.IsTargetHit())
             await StateMachine.Enter<ChaseState>();
-    }
-
-    public override UniTask Exit()
-    {
-        DisposeToken();
-        return UniTask.CompletedTask;
     }
 }
