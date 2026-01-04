@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using _Project.Logic.Health;
-using _Project.Logic.Configs;
+using _Project.Logic.Configs.Data;
 using _Project.Logic.Infrastructure.StateMachine;
 
 namespace _Project.Logic.Characters

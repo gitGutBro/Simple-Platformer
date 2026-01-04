@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace _Project.Logic.Configs
+namespace _Project.Logic.Configs.Data
 {
     [CreateAssetMenu(fileName = "PlayerData", menuName = "Scriptable Objects/PlayerData")]
     internal class PlayerData : ScriptableObject, IJumpData, IMoveData

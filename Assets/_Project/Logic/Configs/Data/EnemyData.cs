@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace _Project.Logic.Configs
+namespace _Project.Logic.Configs.Data
 {
     [CreateAssetMenu(fileName = "EnemyData", menuName = "Scriptable Objects/EnemyData")]
     internal class EnemyData : ScriptableObject, INavigationData

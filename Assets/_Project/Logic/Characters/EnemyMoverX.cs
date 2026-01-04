@@ -3,7 +3,7 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using _Project.Logic.Common;
-using _Project.Logic.Configs;
+using _Project.Logic.Configs.Data;
 
 namespace _Project.Logic.Characters
 {

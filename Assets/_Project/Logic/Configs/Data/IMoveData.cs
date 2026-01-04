@@ -1,4 +1,4 @@
-namespace _Project.Logic.Configs
+namespace _Project.Logic.Configs.Data
 {
     internal interface IMoveData
     {

@@ -1,6 +1,6 @@
 using System;
 using UnityEngine;
-using _Project.Logic.Configs;
+using _Project.Logic.Configs.Data;
 
 namespace _Project.Logic.Characters
 {
