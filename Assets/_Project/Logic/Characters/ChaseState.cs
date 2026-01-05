@@ -1,7 +1,6 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using _Project.Logic.Characters;
-using _Project.Logic.Infrastructure.StateMachine;
 
 internal sealed class ChaseState : BaseState
 {
@@ -10,21 +9,19 @@ internal sealed class ChaseState : BaseState
     public ChaseState(IChaseContext chaseContext) => 
         _chaseContext = chaseContext;
 
-    public override async UniTask Enter()
+    protected override async UniTask EnterCore(CancellationToken cancellationToken)
     {
-        CancellationTokenSource = new CancellationTokenSource();
-
         if (_chaseContext.TargetDetector.IsTargetHit() is false)
         {
             DisposeToken();
-            await StateMachine.Enter<PatrolState>();
+            await StateChanger.Enter<PatrolState>();
             return;
         }
 
-        _chaseContext.MoverX.MoveToTarget(_chaseContext.TargetDetector.GetTargetTransfrom(), CancellationTokenSource.Token).Forget();
+        _chaseContext.MoverX.MoveToTarget(_chaseContext.TargetDetector.GetTargetTransfrom(), cancellationToken).Forget();
 
-        UniTask waitLost = UniTask.WaitUntil(() => _chaseContext.TargetDetector.IsTargetLost(), cancellationToken: CancellationTokenSource.Token);
-        UniTask waitNear = UniTask.WaitUntil(() => _chaseContext.TargetDetector.IsTargetNear(), cancellationToken: CancellationTokenSource.Token);
+        UniTask waitLost = UniTask.WaitUntil(() => _chaseContext.TargetDetector.IsTargetLost(), cancellationToken: cancellationToken);
+        UniTask waitNear = UniTask.WaitUntil(() => _chaseContext.TargetDetector.IsTargetNear(), cancellationToken: cancellationToken);
 
         await UniTask.WhenAny(waitLost, waitNear);
 
@@ -32,12 +29,12 @@ internal sealed class ChaseState : BaseState
 
         if (_chaseContext.TargetDetector.IsTargetLost())
         {
-            await StateMachine.Enter<PatrolState>();
+            await StateChanger.Enter<PatrolState>();
         }
         else
         {
             _chaseContext.MoverX.Stop();
-            await StateMachine.Enter<AttackState>();
+            await StateChanger.Enter<AttackState>();
         }
     }
 }

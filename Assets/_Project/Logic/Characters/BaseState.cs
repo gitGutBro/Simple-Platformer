@@ -6,14 +6,19 @@ namespace _Project.Logic.Characters
 {
     internal abstract class BaseState : IState
     {
-        protected CancellationTokenSource CancellationTokenSource;
+        private CancellationTokenSource _cancellationTokenSource;
 
-        protected StateMachine StateMachine { get; private set; }
+        protected IStateChanger StateChanger { get; private set; }
 
-        public void SetStateMachine(StateMachine stateMachine) =>
-            StateMachine = stateMachine;
+        public void SetStateChanger(IStateChanger stateChanger) =>
+            StateChanger = stateChanger;
 
-        public abstract UniTask Enter();
+        public UniTask Enter()
+        {
+            _cancellationTokenSource = new CancellationTokenSource();
+
+            return EnterCore(_cancellationTokenSource.Token);
+        }
 
         public async UniTask Exit()
         {
@@ -23,9 +28,11 @@ namespace _Project.Logic.Characters
 
         protected void DisposeToken()
         {
-            CancellationTokenSource?.Cancel();
-            CancellationTokenSource?.Dispose();
-            CancellationTokenSource = null;
+            _cancellationTokenSource?.Cancel();
+            _cancellationTokenSource?.Dispose();
+            _cancellationTokenSource = null;
         }
+
+        protected abstract UniTask EnterCore(CancellationToken cancellationToken);
     }
 }

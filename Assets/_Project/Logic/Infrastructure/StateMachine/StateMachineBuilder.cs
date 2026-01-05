@@ -26,7 +26,7 @@ namespace _Project.Logic.Infrastructure.StateMachine
             StateMachine stateMachine = new(states);
 
             foreach (IState state in states.Values)
-                state.SetStateMachine(stateMachine);
+                state.SetStateChanger(stateMachine);
 
             return stateMachine;
         }

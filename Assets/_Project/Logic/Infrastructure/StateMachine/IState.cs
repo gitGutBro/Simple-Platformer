@@ -6,6 +6,6 @@ namespace _Project.Logic.Infrastructure.StateMachine
     {
         UniTask Enter();
         UniTask Exit();
-        void SetStateMachine(StateMachine stateMachine);
+        void SetStateChanger(IStateChanger stateChanger);
     }
 }

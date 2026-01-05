@@ -4,7 +4,7 @@ using Cysharp.Threading.Tasks;
 
 namespace _Project.Logic.Infrastructure.StateMachine
 {
-    internal class StateMachine
+    internal class StateMachine : IStateChanger
     {
         private readonly Dictionary<Type, IState> _states;
         

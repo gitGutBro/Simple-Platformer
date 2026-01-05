@@ -14,14 +14,12 @@ internal sealed class PatrolState : BaseState
         _patrolling = patrolling;
     }
 
-    public async override UniTask Enter()
+    protected override async UniTask EnterCore(CancellationToken cancellationToken)
     {
-        CancellationTokenSource = new CancellationTokenSource();
+        _patrolling(cancellationToken).Forget();
 
-        _patrolling(CancellationTokenSource.Token).Forget();
+        await UniTask.WaitUntil(_targetHit, cancellationToken: cancellationToken);
 
-        await UniTask.WaitUntil(_targetHit, cancellationToken: CancellationTokenSource.Token);
-
-        await StateMachine.Enter<ChaseState>();
+        await StateChanger.Enter<ChaseState>();
     }
 }

@@ -17,25 +17,23 @@ internal sealed class AttackState : BaseState
         _targetDetector = targetDetector;
     }
 
-    public override async UniTask Enter()
+    protected override async UniTask EnterCore(CancellationToken cancellationToken)
     {
-        CancellationTokenSource = new CancellationTokenSource();
-
         try
         {
-            while (_targetDetector.IsTargetNear() && CancellationTokenSource.IsCancellationRequested is false)
+            while (_targetDetector.IsTargetNear() && cancellationToken.IsCancellationRequested is false)
             {
                 if (_onCooldown.Invoke() is false)
-                    await _attack(CancellationTokenSource.Token).SuppressCancellationThrow();
+                    await _attack(cancellationToken);
                 else
-                    await UniTask.Yield(PlayerLoopTiming.Update, CancellationTokenSource.Token);
+                    await UniTask.Yield(PlayerLoopTiming.Update, cancellationToken);
 
                 if (_targetDetector.IsTargetNear() is false)
                 {
                     if (_targetDetector.IsTargetHit())
-                        await StateMachine.Enter<ChaseState>();
+                        await StateChanger.Enter<ChaseState>();
                     else
-                        await StateMachine.Enter<PatrolState>();
+                        await StateChanger.Enter<PatrolState>();
 
                     return;
                 }
@@ -48,8 +46,8 @@ internal sealed class AttackState : BaseState
         }
 
         if (_targetDetector.IsTargetLost())
-            await StateMachine.Enter<PatrolState>();
+            await StateChanger.Enter<PatrolState>();
         else if (_targetDetector.IsTargetHit())
-            await StateMachine.Enter<ChaseState>();
+            await StateChanger.Enter<ChaseState>();
     }
 }
