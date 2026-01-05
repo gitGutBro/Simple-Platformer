@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using _Project.Logic.Health;
@@ -21,7 +19,6 @@ namespace _Project.Logic.Characters
         [field: SerializeField] public TargetDetector TargetDetector { get; private set; }
 
         private StateMachine _stateMachine;
-        private Dictionary<Type, IState> _states;
 
         private void Awake()
         {
@@ -35,17 +32,11 @@ namespace _Project.Logic.Characters
             MoverX.Moved += OnMoved;
             MoverX.Stoped += OnStoped;
 
-            _states = new Dictionary<Type, IState>()
-            {
-                { typeof(PatrolState), new PatrolState(TargetDetector.IsTargetHit, MoverX.Patrolling) },
-                { typeof(ChaseState), new ChaseState(this) },
-                { typeof(AttackState), new AttackState(_attacker.TryAttack, () => _attacker.OnCooldown, TargetDetector) }
-            };
-
-            _stateMachine = new StateMachine(_states);
-
-            foreach (IState state in _states.Values)
-                state.SetStateMachine(_stateMachine);
+            _stateMachine = new StateMachineBuilder()
+                .AddState(() => new PatrolState(TargetDetector.IsTargetHit, MoverX.Patrolling))
+                .AddState(() => new ChaseState(this))
+                .AddState(() => new AttackState(_attacker.TryAttack,() => _attacker.OnCooldown, TargetDetector))
+                .Build();
         }
 
         private void Start() =>
