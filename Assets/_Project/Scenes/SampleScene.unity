@@ -947,7 +947,6 @@ MonoBehaviour:
     _rigidbody2D: {fileID: 670591145}
   _animationsSwitcher:
     _animator: {fileID: 670591149}
-    <AttackAnimationTimeInMilliseconds>k__BackingField: 0
   <Health>k__BackingField:
     _current: 10
     <Max>k__BackingField: 10
@@ -1127,7 +1126,6 @@ MonoBehaviour:
   _data: {fileID: 11400000, guid: 9c2da697b3a6ac14692ddb4375ba8e64, type: 2}
   _animationsSwitcher:
     _animator: {fileID: 731614038}
-    <AttackAnimationTimeInMilliseconds>k__BackingField: 0.583
   <Health>k__BackingField:
     _current: 10
     <Max>k__BackingField: 10
@@ -3693,7 +3691,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!114 &1621493348
 MonoBehaviour:
