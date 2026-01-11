@@ -9,16 +9,19 @@ namespace _Project.Logic.Characters
     {
         private const float DelayAfterAnimationInSeconds = 0.5f;
 
-        [SerializeField] private int _damage;
-        [SerializeField] private float _cooldownInMilliseconds;
+        [SerializeField] private AttackData _data;
 
         private bool _isAttacking;
+        private CooldownService _cooldownService;
         private IAttackAnimator _animator;
 
         public event Func<bool> Grounded;
 
-        public bool OnCooldown { get; private set; }
+        public bool OnCooldown => _cooldownService.IsOnCooldown;
         public bool CanAttack => _isAttacking is false && OnCooldown is false && Grounded.Invoke();
+
+        private void Awake() => 
+            _cooldownService = new CooldownService(_data.CooldownInSeconds);
 
         public void Init(IAttackAnimator animator) =>
             _animator = animator;
@@ -37,31 +40,14 @@ namespace _Project.Logic.Characters
             if (OnCooldown)
                 return;
 
-            OnCooldown = true;
-            RunCooldownUncancellable().Forget();
+            _cooldownService.WaitCooldown().Forget();
 
             _animator.SetAttacking();
+            await UniTask.WaitForSeconds(_animator.AttackAnimationTimeInSeconds);
 
-            await UniTask.Delay(TimeSpan.FromMilliseconds(_animator.AttackAnimationTimeInSeconds));
+            TakeDamageToAll(_data.Damage);
+
             await UniTask.WaitForSeconds(DelayAfterAnimationInSeconds);
-
-            TakeDamageToAll(_damage);
-        }
-
-        private async UniTaskVoid RunCooldownUncancellable()
-        {
-            try
-            {
-                await UniTask.Delay(TimeSpan.FromMilliseconds(_cooldownInMilliseconds));
-            }
-            catch (Exception ex)
-            {
-                Debug.LogException(ex);
-            }
-            finally
-            {
-                OnCooldown = false;
-            }
         }
 
         private async UniTaskVoid HandleAttack()

@@ -15,19 +15,21 @@ namespace _Project.Logic.Characters
         [SerializeField] private CircleCollider2D _areaCollider;
         [SerializeField] private VampireSkillData _data;
 
-        private bool _isOnCooldown;
         private bool _isActivated;
         private bool _isStealing;
-        
+
+        private CooldownService _cooldownService;
         private IHealable _healable;
 
-        private bool CanActivate => _isOnCooldown is false && _isActivated is false;
+        private bool CanActivate => _cooldownService.IsOnCooldown is false && _isActivated is false;
         
         private void Awake()
         {
             _areaImage.enabled = false;
             _areaCollider.enabled = false;
             
+            _cooldownService = new CooldownService(_data.CooldownInSeconds);
+
             WaitStealing(_globalTokenSource.Token).Forget();
         }
 
@@ -69,14 +71,7 @@ namespace _Project.Logic.Characters
             await UniTask.WaitForSeconds(_data.ActiveTimeInSeconds);
             ChangeActivateStates(false);
                 
-            WaitCooldown().Forget();
-        }
-
-        private async UniTaskVoid WaitCooldown()
-        {
-            _isOnCooldown = true;
-            await UniTask.WaitForSeconds(_data.CooldownInSeconds);
-            _isOnCooldown = false;
+            _cooldownService.WaitCooldown().Forget();
         }
 
         private async UniTask StealHealth(CancellationToken cancellationToken)

@@ -675,8 +675,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5bc248062b3414fa0aeba81a5603f7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Characters.Attacker
-  _damage: 5
-  _cooldownInMilliseconds: 1000
+  _data: {fileID: 11400000, guid: 10f01af9e7bf4c24eb1afcee1b93d293, type: 2}
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
@@ -3542,8 +3541,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5bc248062b3414fa0aeba81a5603f7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Characters.Attacker
-  _damage: 2
-  _cooldownInMilliseconds: 2500
+  _data: {fileID: 11400000, guid: 9e6b9a4747b04764398bcd951a54d94e, type: 2}
 --- !u!1 &1554173482
 GameObject:
   m_ObjectHideFlags: 0
