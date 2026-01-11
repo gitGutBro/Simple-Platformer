@@ -14,17 +14,19 @@ namespace _Project.Logic.Characters
         private bool _isAttacking;
         private CooldownService _cooldownService;
         private IAttackAnimator _animator;
-
-        public event Func<bool> Grounded;
+        private Func<bool> _grounded;
 
         public bool OnCooldown => _cooldownService.IsOnCooldown;
-        public bool CanAttack => _isAttacking is false && OnCooldown is false && Grounded.Invoke();
+        public bool CanAttack => _isAttacking is false && OnCooldown is false && _grounded.Invoke();
 
         private void Awake() => 
             _cooldownService = new CooldownService(_data.CooldownInSeconds);
 
-        public void Init(IAttackAnimator animator) =>
+        public void Init(IAttackAnimator animator, Func<bool> grounded = null)
+        {
             _animator = animator;
+            _grounded = grounded;
+        }
 
         public void OnAttackPressed()
         {

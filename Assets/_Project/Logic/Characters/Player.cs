@@ -33,8 +33,7 @@ namespace _Project.Logic.Characters
         private void Start()
         {
             _animationsSwitcher.Init(_data);
-            _attacker.Init(_animationsSwitcher);
-            _attacker.Grounded += _jumper.OnIsGrounded;
+            _attacker.Init(_animationsSwitcher, _jumper.OnIsGrounded);
 
             _vampireSkill.Init(this);
             _jumper.Init(_data);
@@ -68,7 +67,6 @@ namespace _Project.Logic.Characters
 
         private void OnDestroy()
         {
-            _attacker.Grounded -= _jumper.OnIsGrounded;
             Health.Died -= OnDie;
 
             if (_inputSystem is not null)
