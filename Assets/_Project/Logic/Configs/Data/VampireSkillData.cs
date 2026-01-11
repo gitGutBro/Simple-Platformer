@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace _Project.Logic.Characters
+namespace _Project.Logiс.Configs.Data
 {
     [CreateAssetMenu(fileName = "VampireSkillData", menuName = "Scriptable Objects/VampireSkillData")]
     internal class VampireSkillData : ScriptableObject
