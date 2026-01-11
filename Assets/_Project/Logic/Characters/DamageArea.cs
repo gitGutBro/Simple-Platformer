@@ -1,26 +1,48 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace _Project.Logic.Characters
 {
     internal abstract class DamageArea : MonoBehaviour
     {
-        private IDamagable _currentDamagable;
-        
-        protected bool HaveTarget => _currentDamagable is not null;
+        private readonly HashSet<IDamagable> _overlappingTargets = new();
+
+        protected bool HaveTarget => _overlappingTargets.Count > 0;
         
         private void OnTriggerEnter2D(Collider2D other)
         {
             if (other.TryGetComponent(out IDamagable damagable))
-                _currentDamagable = damagable;
+                _overlappingTargets.Add(damagable);
         }
 
         private void OnTriggerExit2D(Collider2D other)
         {
-            if  (other.TryGetComponent(out IDamagable _))
-                _currentDamagable = null;
+            if  (other.TryGetComponent(out IDamagable damagable))
+                _overlappingTargets.Remove(damagable);
         }
-        
-        protected int TakeDamageToTarget(int damage) => 
-            _currentDamagable.TakeDamage(damage);
+
+        private void OnDestroy() =>
+            _overlappingTargets.Clear();
+
+        protected int TakeDamageToAll(int damage)
+        {
+            if (_overlappingTargets.Count is 0)
+                return 0;
+
+            IDamagable[] copy = new IDamagable[_overlappingTargets.Count];
+            _overlappingTargets.CopyTo(copy);
+
+            int totalApplied = 0;
+
+            foreach (IDamagable damagable in copy)
+            {
+                if (damagable is null)
+                    continue;
+
+                totalApplied += damagable.TakeDamage(damage);
+            }
+
+            return totalApplied;
+        }
     }
 }

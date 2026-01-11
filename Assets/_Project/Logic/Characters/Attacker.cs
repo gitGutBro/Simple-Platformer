@@ -45,8 +45,7 @@ namespace _Project.Logic.Characters
             await UniTask.Delay(TimeSpan.FromMilliseconds(_animator.AttackAnimationTimeInSeconds));
             await UniTask.WaitForSeconds(DelayAfterAnimationInSeconds);
 
-            if (HaveTarget)
-                TakeDamageToTarget(_damage);
+            TakeDamageToAll(_damage);
         }
 
         private async UniTaskVoid RunCooldownUncancellable()

@@ -91,7 +91,7 @@ namespace _Project.Logic.Characters
             
             _isStealing = true;
             
-            int takenDamage = TakeDamageToTarget(_data.DamageInHalfSecond);
+            int takenDamage = TakeDamageToAll(_data.DamageInHalfSecond);
             _healable.Heal(takenDamage);
 
             await UniTask.WaitForSeconds(HalfSecond, cancellationToken: cancellationToken);
