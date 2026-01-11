@@ -57,7 +57,7 @@ namespace _Project.Logic.Characters
             _stateMachine.Exit().Forget();
         }
         
-        public void TakeDamage(int amount) => 
+        public int TakeDamage(int amount) => 
             Health.Decrease(amount);
 
         private void OnDie()

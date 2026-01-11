@@ -3,6 +3,7 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
+using _Project.Logiс.Configs.Data;
 
 namespace _Project.Logic.Characters
 {
@@ -90,8 +91,8 @@ namespace _Project.Logic.Characters
             
             _isStealing = true;
             
-            TakeDamageToTarget(_data.DamageInHalfSecond);
-            _healable.Heal(_data.DamageInHalfSecond);
+            int takenDamage = TakeDamageToTarget(_data.DamageInHalfSecond);
+            _healable.Heal(takenDamage);
 
             await UniTask.WaitForSeconds(HalfSecond, cancellationToken: cancellationToken);
             

@@ -83,10 +83,10 @@ namespace _Project.Logic.Characters
             _inputSystem = null;
         }
 
-        public void TakeDamage(int amount) => 
+        public int TakeDamage(int amount) => 
             Health.Decrease(amount);
         
-        public void Heal(int amount) =>
+        public int Heal(int amount) =>
             Health.Increase(amount);
         
         private void OnDie() => 

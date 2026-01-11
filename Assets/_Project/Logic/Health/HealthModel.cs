@@ -26,37 +26,47 @@ namespace _Project.Logic.Health
                 _current = Max;
         }
 
-        public void Increase(int heal)
+        public int Increase(int heal)
         {
             if (heal <= 0)
             {
 #if UNITY_EDITOR
                 Debug.LogError($"Value heal is zero or less! {GetType()}");
 #endif
-                return;
+                return 0;
             }
 
+            int previous = _current;
             _current = Mathf.Clamp(_current + heal, Min, Max);
+            int healed = _current - previous;
 
-            Changed?.Invoke(_current, Max);
+            if (healed > 0)
+                Changed?.Invoke(_current, Max);
+
+            return healed;
         }
 
-        public void Decrease(int damage)
+        public int Decrease(int damage)
         {
             if (damage <= 0)
             {
 #if UNITY_EDITOR
                 Debug.LogError($"Value damage is zero or less! {GetType()}");
 #endif
-                return;
-            }    
+                return 0;
+            }
 
+            int previous = _current;
             _current = Mathf.Clamp(_current - damage, Min, Max);
+            int damaged = previous - _current;
 
-            Changed?.Invoke(_current, Max);
+            if (damaged > 0)
+                Changed?.Invoke(_current, Max);
 
             if (_current <= Min)
                 Died?.Invoke();
+
+            return damaged;
         }
     }
 }

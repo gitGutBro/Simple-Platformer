@@ -2,6 +2,6 @@
 {
     internal interface IHealable : IHealthHaver
     {
-        public void Heal(int amount);
+        public int Heal(int amount);
     }
 }

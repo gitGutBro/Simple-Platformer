@@ -2,6 +2,6 @@
 {
     internal interface IDamagable : IHealthHaver
     {
-        public void TakeDamage(int amount);
+        public int TakeDamage(int amount);
     }
 }
