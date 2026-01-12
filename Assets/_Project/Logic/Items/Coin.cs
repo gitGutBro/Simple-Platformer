@@ -8,7 +8,13 @@ namespace _Project.Logic.Items
         public void Consume(IItemConsumer consumer)
         {
             consumer.Wallet.AddCoin();
-            Destroy(gameObject);
+            gameObject.SetActive(false);
+        }
+
+        public void Respawn(Transform newPosition)
+        {
+            transform.position = newPosition.position;
+            gameObject.SetActive(true);
         }
     }
 }

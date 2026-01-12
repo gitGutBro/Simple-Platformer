@@ -13,7 +13,7 @@ namespace _Project.Logic.Characters
 
         public bool IsOnCooldown { get; private set; }
 
-        public async UniTaskVoid WaitCooldown()
+        public async UniTask WaitCooldown()
         {
             IsOnCooldown = true;
 
