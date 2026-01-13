@@ -1,3 +1,5 @@
+using System;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using _Project.Logic.Characters;
@@ -8,32 +10,53 @@ namespace _Project.Logic.Items
     {
         private const int SpawnCooldownInSeconds = 5;
 
-        [SerializeField] private Coin _coin;
+        private readonly CancellationTokenSource _globalTokenSource = new();
+
+        [SerializeField] private Coin _coinPrefab;
         [SerializeField] private Transform[] _spawnPoints;
+
+        private Coin _currentCoin;
 
         private readonly System.Random _random = new();
         private readonly CooldownService _cooldownService = new(SpawnCooldownInSeconds);
 
         private Transform RandomSpawnPoint => _spawnPoints[_random.Next(_spawnPoints.Length)];
 
-
         private void Start()
         {
-            _coin.Respawn(RandomSpawnPoint);
-
-            Spawning().Forget();
+            _currentCoin = Instantiate(_coinPrefab, RandomSpawnPoint.position, Quaternion.identity, transform);
+            _currentCoin.Consumed += OnCoinConsumed;
         }
 
-        private async UniTaskVoid Spawning()
+        private void OnDestroy()
         {
-            while (enabled)
+            _globalTokenSource.Cancel();
+            _globalTokenSource.Dispose();
+
+            if (_currentCoin != null)
+                _currentCoin.Consumed -= OnCoinConsumed;
+        }
+
+        private void OnCoinConsumed() => 
+            HandleRespawn().Forget();
+
+        private async UniTaskVoid HandleRespawn()
+        {
+            CancellationToken cancellationToken = _globalTokenSource.Token;
+
+            try
             {
-                await UniTask.WaitUntil(() => _coin.gameObject.activeSelf is false);
-
-                await _cooldownService.WaitCooldown();
-
-                _coin.Respawn(RandomSpawnPoint);
+                await _cooldownService.WaitCooldown(cancellationToken);
             }
+            catch (OperationCanceledException)
+            {
+                return;
+            }
+
+            if (cancellationToken.IsCancellationRequested)
+                return;
+
+            _currentCoin.Respawn(RandomSpawnPoint);
         }
     }
 }

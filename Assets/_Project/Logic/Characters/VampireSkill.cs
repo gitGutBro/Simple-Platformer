@@ -14,6 +14,7 @@ namespace _Project.Logic.Characters
         [SerializeField] private Image _areaImage;
         [SerializeField] private CircleCollider2D _areaCollider;
         [SerializeField] private VampireSkillData _data;
+        [SerializeField] private VampireCooldownBar _cooldownBar;
 
         private bool _isActivated;
         private bool _isStealing;
@@ -29,7 +30,8 @@ namespace _Project.Logic.Characters
             _areaCollider.enabled = false;
             
             _cooldownService = new CooldownService(_data.CooldownInSeconds);
-
+            _cooldownService.Tick += OnCooldownTick;
+                
             WaitStealing(_globalTokenSource.Token).Forget();
         }
 
@@ -37,11 +39,27 @@ namespace _Project.Logic.Characters
         {
             _globalTokenSource?.Cancel();
             _globalTokenSource?.Dispose();
+
+            _cooldownService.Tick -= OnCooldownTick;
         }
+
+        public void Init(IHealable healable) =>
+            _healable = healable;
+
+        public void OnVampirePressed()
+        {
+            if (CanActivate is false)
+                return;
+            
+            Activate().Forget();
+        }
+
+        private void OnCooldownTick(float normalized, float remainingSeconds) => 
+            _cooldownBar.UpdateCooldown(normalized, remainingSeconds);
 
         private async UniTaskVoid WaitStealing(CancellationToken globalToken)
         {
-            Func<bool> cachedCanSteal = () => _isActivated && HaveTarget && _healable is not null;
+            Func<bool> cachedCanSteal = () => _isActivated && HaveTarget && _healable != null;
             
             while (globalToken.IsCancellationRequested is false)
             {
@@ -54,24 +72,13 @@ namespace _Project.Logic.Characters
             }
         }
         
-        public void Init(IHealable healable) =>
-            _healable = healable;
-
-        public void OnVampirePressed()
-        {
-            if (CanActivate is false)
-                return;
-            
-            Activate().Forget();
-        }
-        
         private async UniTaskVoid Activate()
         {
             ChangeActivateStates(true);
             await UniTask.WaitForSeconds(_data.ActiveTimeInSeconds);
             ChangeActivateStates(false);
                 
-            _cooldownService.WaitCooldown().Forget();
+            _cooldownService.WaitCooldown(_globalTokenSource.Token).Forget();
         }
 
         private async UniTask StealHealth(CancellationToken cancellationToken)
