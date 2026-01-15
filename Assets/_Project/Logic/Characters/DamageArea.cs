@@ -22,7 +22,7 @@ namespace _Project.Logic.Characters
         }
 
         private void OnDestroy() =>
-            _overlappingTargets.Clear();
+            _overlappingTargets?.Clear();
 
         protected int TakeDamageToAll(int damage)
         {

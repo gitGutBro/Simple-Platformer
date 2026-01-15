@@ -17,18 +17,18 @@ namespace _Project.Logic.Characters
         [SerializeField] private PlayerMoverX _moverX;
         [SerializeField] private AnimationsCharacterSwitcher _animationsSwitcher;
 
+        [field: SerializeField] public HealthModel Health { get; private set; }
+
+        private IGameplayInputSystem _inputSystem;
+
+        public Wallet Wallet { get; private set; }
+
         [Inject]
         public void Construct(IGameplayInputSystem inputSystem, Wallet wallet)
         {
             _inputSystem = inputSystem;
             Wallet = wallet;
         }
-
-        [field: SerializeField] public HealthModel Health { get; private set; }
-
-        private IGameplayInputSystem _inputSystem;
-
-        public Wallet Wallet { get; private set; }
         
         private void Start()
         {

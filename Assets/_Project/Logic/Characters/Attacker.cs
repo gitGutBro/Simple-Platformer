@@ -33,7 +33,6 @@ namespace _Project.Logic.Characters
             if (CanAttack is false)
                 return;
 
-            _isAttacking = true;
             HandleAttack().Forget();
         }
 
@@ -54,6 +53,7 @@ namespace _Project.Logic.Characters
 
         private async UniTaskVoid HandleAttack()
         {
+            _isAttacking = true;
             await TryAttack();
             _isAttacking = false;
         }
